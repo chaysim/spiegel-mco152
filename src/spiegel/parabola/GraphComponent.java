@@ -40,6 +40,7 @@ public class GraphComponent extends JComponent {
 		for (int i = 0; i < arcs.length; i++) {
 			int x1 = (int) arcs[i].getX(time) - 5;
 			int y1 = (int) -arcs[i].getY(time) - 5;
+			// obviously could call from this class too
 			g.setColor(arcs[i].getC());
 			g.fillOval(x1, y1, 10, 10);
 		}
