@@ -31,7 +31,7 @@ public class GraphComponent extends JComponent {
 			arcs[i] = a;
 		}
 	}
-
+//testing
 	// override method- here we can fill a paint component
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
