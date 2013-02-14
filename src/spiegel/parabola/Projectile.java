@@ -23,8 +23,8 @@ public class Projectile {
 	}
 
 	public double getY(double time) {
-		double y = Math.sin(Math.toRadians(angle)) * velocity * time + (.5) * -9.8
-				* (time * time);
+		double y = Math.sin(Math.toRadians(angle)) * velocity * time + (.5)
+				* -9.8 * (time * time);
 		return y;
 	}
 
@@ -47,7 +47,15 @@ public class Projectile {
 	@Override
 	public String toString() {
 		return "Parabola angle=" + angle + ", velocity=" + velocity + ", x="
-				+ x + ", y=" + y +  ".";
+				+ x + ", y=" + y + ".";
+	}
+
+	public Color getC() {
+		return c;
+	}
+
+	public void setC(Color c) {
+		this.c = c;
 	}
 
 	public static void main(String[] args) {
@@ -60,13 +68,4 @@ public class Projectile {
 		}
 
 	}
-
-	public Color getC() {
-		return c;
-	}
-
-	public void setC(Color c) {
-		this.c = c;
-	}
-
 }

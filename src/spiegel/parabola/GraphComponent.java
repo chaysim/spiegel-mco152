@@ -46,7 +46,22 @@ public class GraphComponent extends JComponent {
 		}
 		this.repaint();
 	}
-
+	public void trails()
+	{
+		
+	}
+	public void gridlines()
+	{
+		
+	}
+	public void randomColors()
+	{
+		
+	}
+	public void continuousLifespan()
+	{
+		
+	}
 	public Color color(int i) {
 		i += 1;
 		Color j = new Color(i * 40, i * 20, i * 32, i * 50);
