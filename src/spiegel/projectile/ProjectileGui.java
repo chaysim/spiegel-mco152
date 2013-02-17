@@ -1,4 +1,4 @@
-package spiegel.parabola;
+package spiegel.projectile;
 
 import java.awt.*;
 

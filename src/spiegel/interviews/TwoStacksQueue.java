@@ -37,6 +37,11 @@ public class TwoStacksQueue<E> {
 		size--;
 		return queue.pop();
 	}
+	
+	public E peek()
+	{
+		return queue.peek();
+	}
 
 	public String toString() {
 

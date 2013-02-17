@@ -1,11 +1,12 @@
-package spiegel.parabola;
+package spiegel.projectile;
 
 import java.awt.Color;
 
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import spiegel.parabola.Projectile;
+
+import spiegel.projectile.Projectile;
 
 public class ProjectileTest {
 	private Projectile pb;
