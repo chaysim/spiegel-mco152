@@ -8,23 +8,25 @@ public class Projectile {
 	private double x;
 	private double y;
 	private Color c;
+	private long lifespan;
 
-	public Projectile(int angle, int velocity, Color c) {
+	public Projectile(int angle, int velocity, Color c, long lifespan) {
 		this.angle = angle;
 		this.velocity = velocity;
 		x = 0;
 		y = 0;
 		this.c = c;
+		this.lifespan = lifespan;
 	}
 
 	public double getX(double time) {
-		double x = Math.cos(Math.toRadians(angle)) * velocity * time;
+		x = Math.cos(Math.toRadians(angle)) * velocity * time;
 		return x;
 	}
 
 	public double getY(double time) {
-		double y = Math.sin(Math.toRadians(angle)) * velocity * time + (.5)
-				* -9.8 * (time * time);
+		y = Math.sin(Math.toRadians(angle)) * velocity * time + (.5) * -9.8
+				* (time * time);
 		return y;
 	}
 
@@ -44,12 +46,6 @@ public class Projectile {
 		this.velocity = velocity;
 	}
 
-	@Override
-	public String toString() {
-		return "Parabola angle=" + angle + ", velocity=" + velocity + ", x="
-				+ x + ", y=" + y + ".";
-	}
-
 	public Color getC() {
 		return c;
 	}
@@ -62,10 +58,18 @@ public class Projectile {
 
 		Projectile[] a = new Projectile[11];
 		for (int i = 0; i < 11; i++) {
-			Projectile pb = new Projectile(i, 25, Color.red);
+			Projectile pb = new Projectile(i, 25, Color.red, 17000);
 			System.out.println(pb);
 			a[i] = pb;
 		}
 
+	}
+
+	public long getLifespan() {
+		return lifespan;
+	}
+
+	public void setLifespan(int lifespan) {
+		this.lifespan = lifespan;
 	}
 }

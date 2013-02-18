@@ -16,8 +16,8 @@ public class ProjectileTest {
 	@Before
 	public void setUp() throws Exception {
 		
-		pb = new Projectile(37, 73, Color.red);
-		pb2 = new Projectile(37, 73, Color.red);
+		pb = new Projectile(37, 73, Color.red, 12000);
+		pb2 = new Projectile(37, 73, Color.red, 12000);
 	}
 
 	@Test

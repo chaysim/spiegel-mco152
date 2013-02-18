@@ -6,17 +6,15 @@ public class TwoStacksQueue<E> {
 
 	private Stack<E> original;
 	private Stack<E> queue;
-	private int size;
-
+	
 	public TwoStacksQueue(Stack<E> stack1) {
 		this.original = stack1;
 		this.queue = new Stack<E>();
-		this.size = original.size();
 		transform(original, queue);
 	}
 
 	public void transform(Stack<E> stack1, Stack<E> stack2) {
-		for (int i = 0; i < size; i++) {
+		while (!stack1.isEmpty()) {
 			E varE = stack1.pop();
 			stack2.push(varE);
 		}
@@ -27,14 +25,12 @@ public class TwoStacksQueue<E> {
 	{
 		transform(queue, original);
 		original.push(item);
-		size++;
 		transform(original, queue);
 		
 	}
 	
 	public E dequeue()
 	{
-		size--;
 		return queue.pop();
 	}
 	
@@ -46,10 +42,9 @@ public class TwoStacksQueue<E> {
 	public String toString() {
 
 		String que = "";
-		for (int i = 0; i < size; i++) {
+		while (!queue.isEmpty()) {
 			que += queue.pop();
 		}
-		size = 0;
 		return que;
 	}
 
