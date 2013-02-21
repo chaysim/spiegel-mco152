@@ -7,24 +7,24 @@ public class Projectile {
 	private int velocity;
 	private double x;
 	private double y;
-	private Color c;
-	private long lifespan;
+	private double time;
+	private Color color;
 
-	public Projectile(int angle, int velocity, Color c, long lifespan) {
+	public Projectile(int angle, int velocity, Color color) {
 		this.angle = angle;
 		this.velocity = velocity;
 		x = 0;
 		y = 0;
-		this.c = c;
-		this.lifespan = lifespan;
+		this.time = 0;
+		this.setColor(color);
 	}
 
-	public double getX(double time) {
+	public double getX() {
 		x = Math.cos(Math.toRadians(angle)) * velocity * time;
 		return x;
 	}
 
-	public double getY(double time) {
+	public double getY() {
 		y = Math.sin(Math.toRadians(angle)) * velocity * time + (.5) * -9.8
 				* (time * time);
 		return y;
@@ -46,30 +46,20 @@ public class Projectile {
 		this.velocity = velocity;
 	}
 
-	public Color getC() {
-		return c;
+	public double getTime() {
+		return time;
 	}
 
-	public void setC(Color c) {
-		this.c = c;
+	public void addTime(double delta) {
+		time += delta;
 	}
 
-	public static void main(String[] args) {
-
-		Projectile[] a = new Projectile[11];
-		for (int i = 0; i < 11; i++) {
-			Projectile pb = new Projectile(i, 25, Color.red, 17000);
-			System.out.println(pb);
-			a[i] = pb;
-		}
-
+	public Color getColor() {
+		return color;
 	}
 
-	public long getLifespan() {
-		return lifespan;
+	public void setColor(Color color) {
+		this.color = color;
 	}
 
-	public void setLifespan(int lifespan) {
-		this.lifespan = lifespan;
-	}
 }

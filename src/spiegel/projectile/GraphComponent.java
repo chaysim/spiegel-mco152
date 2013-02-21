@@ -15,28 +15,24 @@ import javax.swing.JComponent;
 //random colors
 //images instead of ovals
 //coordinates
-//continuous
+//continuously shooting out
 //life span
 
 public class GraphComponent extends JComponent {
 
 	private static final long serialVersionUID = 1L;
-	private double time = 0;
-	private Projectile[] arcs;
 	private Random randomNum;
-	private long startTime;
-	private ArrayList<Point> points;
+	private ArrayList<Projectile> projectiles;
 
 	public GraphComponent() {
 		randomNum = new Random();
-		startTime = Calendar.getInstance().getTimeInMillis();
-		arcs = new Projectile[5];
-		for (int i = 0; i < arcs.length; i++) {
-			Projectile a = new Projectile(randomNum.nextInt(180),
-					randomNum.nextInt(500), color(), randomNum.nextInt(15000));
-			arcs[i] = a;
-		}
-		points = new ArrayList<Point>();
+		projectiles = new ArrayList<Projectile>();
+	}
+
+	public void addProjectiles() {
+		Projectile projectile = new Projectile(randomNum.nextInt(90),
+				randomNum.nextInt(500), color());
+		projectiles.add(projectile);
 	}
 
 	// override method- here we can fill a paint component
@@ -44,33 +40,25 @@ public class GraphComponent extends JComponent {
 		super.paintComponent(g);
 		gridlines(g);
 		g.translate(getWidth() / 2, getHeight() / 2);
-		time += .009;
-		int x1 = 0, y1 = 0;
-		for (int i = 0; i < arcs.length; i++) {
-			continuousLifespan(g, x1, y1);
-
-			long timeNow = Calendar.getInstance().getTimeInMillis();
-
-			if (timeNow > startTime + arcs[i].getLifespan()) {
-				continue;
-			} else {
-				x1 = (int) arcs[i].getX(time) - 5;
-				y1 = (int) -arcs[i].getY(time) - 5;
-				g.setColor(arcs[i].getC());
+		addProjectiles();
+		int x1, y1;
+		for (Projectile p : projectiles) {
+			x1 = (int) p.getX() - 5;
+			y1 = (int) -p.getY() - 5;
+			if (continuousLifespan(g, x1, y1)) {
+				g.setColor(p.getColor());
 				g.fillOval(x1, y1, 10, 10);
-
+				p.addTime(.001);
 			}
 		}
-
 		this.repaint();
 	}
 
+	// no longer to be used
 	public void trails(Graphics g, int x1, int y1) {
 		g.setColor(Color.lightGray);
-		Point p = new Point(x1, y1);
-		points.add(p);
-		for (Point po : points) {
-			g.fillOval((int) po.getX(), (int) po.getY(), 10, 10);
+		for (Projectile p : projectiles) {
+			g.fillOval((int) p.getX(), (int) p.getY(), 10, 10);
 		}
 	}
 
@@ -88,11 +76,12 @@ public class GraphComponent extends JComponent {
 		}
 	}
 
-	public void continuousLifespan(Graphics g, int x1, int y1) {
+	public boolean continuousLifespan(Graphics g, int x1, int y1) {
 
-		if (y1 < -getHeight() || x1 < -getWidth() || y1 > getHeight()
-				|| x1 > getWidth()) {
-			time = 0;
+		if (y1 > getHeight() / 2 || x1 > getWidth() / 2) {
+			return false;
+		} else {
+			return true;
 		}
 	}
 
