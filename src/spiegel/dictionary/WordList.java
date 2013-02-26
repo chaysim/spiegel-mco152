@@ -11,7 +11,7 @@ public class WordList {
 
 	public WordList() throws FileNotFoundException {
 		File file = new File("./wordlist.txt");
-		Scanner keyboard = new Scanner(file);
+		Scanner readFromFile = new Scanner(file);
 
 		bySize = new HashMap<Integer, LinkedList<String>>();
 
@@ -21,13 +21,13 @@ public class WordList {
 			bySize.put(i + 1, sizes);
 		}
 
-		while (keyboard.hasNextLine()) {
-			String word = keyboard.nextLine();
+		while (readFromFile.hasNextLine()) {
+			String word = readFromFile.nextLine();
 			// put each word in its list in both maps
 
 			bySize.get(word.length()).add(word);
 		}
-		keyboard.close();
+		readFromFile.close();
 	}
 
 	public ArrayList<String> biggestAnagram() {
@@ -36,16 +36,20 @@ public class WordList {
 		// go through bySize
 		for (Map.Entry<Integer, LinkedList<String>> entry : bySize.entrySet()) {
 			Iterator<String> iterator = entry.getValue().iterator();
-			
-			
+
+			HashMap<String, String> anagrammed = new HashMap<String, String>();
 			while (iterator.hasNext()) {
 				String word1 = iterator.next();
-				// no need to add word1, it will be added as word2
+				anagrammed.put(word1, word1);
+				temp.add(word1);
 				Iterator<String> iterator2 = entry.getValue().iterator();
 				while (iterator2.hasNext()) {
+
 					String word2 = iterator2.next();
-					if (anagramHashMap(word1, word2)) {
-						temp.add(word2);
+					if (!anagrammed.containsKey(word2)) {
+						if (anagramHashMap(word1, word2)) {
+							temp.add(word2);
+						}
 					}
 				}
 				if (temp.size() >= biggest.size()) {
