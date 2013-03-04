@@ -14,7 +14,7 @@ public class ProjectileGui extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 
-		add(new GraphComponent(), BorderLayout.CENTER);
+		add(new FireView(), BorderLayout.CENTER);
 
 		setVisible(true);
 

@@ -1,6 +1,7 @@
 package spiegel.fire;
 
 import java.awt.Color;
+import java.util.Stack;
 
 public class Projectile {
 	private int angle;
@@ -9,24 +10,32 @@ public class Projectile {
 	private double y;
 	private Color color;
 	private double time;
+	private double angleCosRadiansX;
+	private double angleSinRadiansY;
+	private int pointX, pointY;
 
-	public Projectile(int angle, int velocity) {
+	public Projectile(int angle, int velocity, int pointX, int pointY) {
 		this.angle = angle;
 		this.velocity = velocity;
 		x = 0;
+		angleCosRadiansX = Math.cos(Math.toRadians(angle));
+		angleSinRadiansY = Math.sin(Math.toRadians(angle));
 		y = 0;
 		this.color = Color.white;
 		this.time = 0;
+		this.pointX = pointX;
+		this.pointY = pointY;
+
 	}
 
 	public double getX() {
-		x = Math.cos(Math.toRadians(angle)) * velocity * time;
+		x = angleCosRadiansX * velocity * time + pointX;
 		return x;
 	}
 
 	public double getY() {
-		y = Math.sin(Math.toRadians(angle)) * velocity * time + (.5) * -9.8
-				* (time * time);
+		y = angleSinRadiansY * velocity * time + (.5) * -9.8 * (time * time)
+				+ pointY;
 		return y;
 	}
 
@@ -49,15 +58,13 @@ public class Projectile {
 	public Color getColor() {
 		if (time <= .1)
 			color = Color.white;
-		else if (time <= .3)
-			color = Color.yellow;
-		else if (time <= .4)
-			color = Color.red;
-		else if (time <= .6)
-			color = Color.orange;
-		else if (time <= .8)
-			color = Color.red;
 		else if (time <= 1)
+			color = Color.yellow;
+		else if (time <= 2)
+			color = Color.orange;
+		else if (time <= 3)
+			color = Color.red;
+		else if (time <= 4)
 			color = Color.gray;
 		else
 			color = Color.lightGray;
@@ -74,6 +81,18 @@ public class Projectile {
 
 	public void addTime(double delta) {
 		this.time = time + delta;
+	}
+
+	public void setPointX(int pointX) {
+		this.pointX = pointX;
+	}
+
+	public void setPointY(int pointY) {
+		this.pointY = pointY;
+	}
+
+	public void setTime(double time) {
+		this.time = time;
 	}
 
 }
