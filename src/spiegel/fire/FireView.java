@@ -38,19 +38,20 @@ public class FireView extends JComponent {
 	public void createPool() {
 		for (int i = 0; i < 40000; i++) {
 			Projectile P = new Projectile(randomNum.nextInt(111) + 35,
-				randomNum.nextInt(40) + 60, 0, 0);
+					randomNum.nextInt(40) + 60, 0, 0);
 			pool.push(P);
 		}
 
 	}
 
 	public void addFountain(Fountain fountain) {
-		fountains.add(fountain);
+		if (fountains.size() < 4)
+			fountains.add(fountain);
 	}
 
 	public void addProjectiles() {
 		for (Fountain f : fountains) {
-			for (int i = 0; i < 100; i++) {
+			for (int i = 0; i < 75; i++) {
 				Projectile p = pool.pop();
 				p.setPointX(f.getX());
 				p.setPointY(f.getY());
@@ -91,7 +92,7 @@ public class FireView extends JComponent {
 
 	public boolean continuousLifespan(Projectile p) {
 
-		if (p.getColor()== Color.lightGray) {
+		if (p.getColor() == Color.gray) {
 			p.setTime(0);
 			pool.push(p);
 			numProjectiles--;
