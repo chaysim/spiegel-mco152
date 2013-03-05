@@ -12,9 +12,6 @@ import java.util.Stack;
 
 import javax.swing.JComponent;
 
-//create an arraylist of 10,000 projectiles and call from it 
-//when you need a new one, when you finish, you release it
-
 public class FireView extends JComponent {
 
 	private static final long serialVersionUID = 1L;
@@ -45,17 +42,19 @@ public class FireView extends JComponent {
 	}
 
 	public void addFountain(Fountain fountain) {
-		if (fountains.size() < 4)
+		if (fountains.size() < 8)
 			fountains.add(fountain);
 	}
 
 	public void addProjectiles() {
 
 		for (Fountain f : fountains) {
+			int x = f.getX();
+			int y = f.getY();
 			for (int i = 0; i < 75; i++) {
 				Projectile p = pool.pop();
-				p.setPointX(f.getX());
-				p.setPointY(f.getY());
+				p.setPointX(x);
+				p.setPointY(y);
 				projectiles.add(p);
 				numProjectiles++;
 			}
