@@ -8,7 +8,6 @@ public class Fountain {
 	private Random randomNum;
 	private int x, y;
 
-
 	public Fountain(int x, int y) {
 		this.randomNum = new Random();
 		this.x = x;

@@ -64,7 +64,7 @@ public class Projectile {
 			color = Color.orange;
 		else if (time <= 3)
 			color = Color.red;
-		else 
+		else
 			color = Color.gray;
 		return color;
 	}

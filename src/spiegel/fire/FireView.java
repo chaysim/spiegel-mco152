@@ -50,6 +50,7 @@ public class FireView extends JComponent {
 	}
 
 	public void addProjectiles() {
+
 		for (Fountain f : fountains) {
 			for (int i = 0; i < 75; i++) {
 				Projectile p = pool.pop();
