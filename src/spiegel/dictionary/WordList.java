@@ -1,6 +1,8 @@
 package spiegel.dictionary;
 
 import java.io.File;
+//based on distribution, take 7 tiles, find all words in it
+//write a unit test with 7 tiles that you choose
 import java.io.FileNotFoundException;
 
 import java.util.*;
