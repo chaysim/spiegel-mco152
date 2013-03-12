@@ -1,7 +1,7 @@
 package spiegel.fire;
 
 import java.util.Random;
-import java.util.Stack;
+
 
 public class Fountain {
 

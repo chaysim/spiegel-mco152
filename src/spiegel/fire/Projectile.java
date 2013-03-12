@@ -1,7 +1,7 @@
 package spiegel.fire;
 
 import java.awt.Color;
-import java.util.Stack;
+
 
 public class Projectile {
 	private int angle;

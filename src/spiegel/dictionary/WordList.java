@@ -6,67 +6,120 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 public class WordList {
 
-	private Map<Integer, LinkedList<String>> bySize;
+	private Map<String, ArrayList<Character>> words;
+	public Map<String, ArrayList<Character>> getWords() {
+		return words;
+	}
+
+	private TileBag tiles;
+	private ArrayList<Character> letters;
 
 	public WordList() throws FileNotFoundException {
 		File file = new File("./wordlist.txt");
 		Scanner readFromFile = new Scanner(file);
-
-		bySize = new HashMap<Integer, LinkedList<String>>();
-
-		// create hashmap of sizes
-		for (int i = 0; i < 21; i++) {
-			LinkedList<String> sizes = new LinkedList<String>();
-			bySize.put(i + 1, sizes);
-		}
-
+		words = new HashMap<String, ArrayList<Character>>();
 		while (readFromFile.hasNextLine()) {
 			String word = readFromFile.nextLine();
 			// put each word in its list in both maps
-
-			bySize.get(word.length()).add(word);
+			ArrayList<Character> wordOrdered = wordToChar(word);
+			words.put(word, wordOrdered);
 		}
 		readFromFile.close();
+		tiles = new TileBag();
+		letters = new ArrayList<Character>();
+
 	}
 
-	public ArrayList<String> biggestAnagram() {
-		ArrayList<String> biggest = new ArrayList<String>();
-		ArrayList<String> temp = new ArrayList<String>();
-		// go through bySize
-		for (Map.Entry<Integer, LinkedList<String>> entry : bySize.entrySet()) {
-			Iterator<String> iterator = entry.getValue().iterator();
+	public ArrayList<Character> wordToChar(String word) {
+		ArrayList<Character> one = new ArrayList<Character>();
+		for (int i = 0; i < word.length(); i++) {
+			one.add(word.charAt(i));
+		}
+		Collections.sort(one);
+		return one;
+	}
 
-			HashMap<String, String> anagrammed = new HashMap<String, String>();
-			while (iterator.hasNext()) {
-				String word1 = iterator.next();
-				anagrammed.put(word1, word1);
-				temp.add(word1);
-				Iterator<String> iterator2 = entry.getValue().iterator();
-				while (iterator2.hasNext()) {
-
-					String word2 = iterator2.next();
-					if (!anagrammed.containsKey(word2)) {
-						if (anagramHashMap(word1, word2)) {
-							temp.add(word2);
-						}
+	public ArrayList<Character> pickTiles(int num){
+		letters = tiles.getSomeLetters(num);
+		return letters;
+	}
+	public ArrayList<String> wordsFromTiles(ArrayList<Character> letters2) {
+		//the arraylist with the words
+		ArrayList<String> tileWords = new ArrayList<String>();
+		//the arraylist with the letters
+		letters = letters2;
+		//go through the hashmap of words
+		for (Entry<String, ArrayList<Character>> entry : words.entrySet()) {
+			ArrayList<Character> value = entry.getValue();
+			//if the letters have every letter in the current word
+			if (letters.containsAll(value)) {
+				//get a copy of the letters arraylist
+				ArrayList<Character> copyLetters = new ArrayList<Character>();
+				for (Character l : letters) {
+					copyLetters.add(l);
+				}
+				boolean matches = true;
+				//for every letter in the word, remove the letter from the copy
+				for (Character l : value) {
+					if (copyLetters.contains(l)) {
+						copyLetters.remove(l);
+					} else {
+						//the letter is no longer in the copy, so the word isn't an anagram
+						matches = false;
+						break;
 					}
 				}
-				if (temp.size() >= biggest.size()) {
-					biggest = temp;
-					temp = new ArrayList<String>();
+				//if the word is an anagram, add it
+				if (matches == true) {
+					tileWords.add(entry.getKey());
 				}
-				temp = new ArrayList<String>();
 			}
-		}
 
-		return biggest;
+		}
+		return tileWords;
+	}
+	public ArrayList<String> wordsFromTiles(int num) {
+		//the arraylist with the words
+		ArrayList<String> tileWords = new ArrayList<String>();
+		//the arraylist with the letters
+		letters = pickTiles(num);
+		//go through the hashmap of words
+		for (Entry<String, ArrayList<Character>> entry : words.entrySet()) {
+			ArrayList<Character> value = entry.getValue();
+			//if the letters have every letter in the current word
+			if (letters.containsAll(value)) {
+				//get a copy of the letters arraylist
+				ArrayList<Character> copyLetters = new ArrayList<Character>();
+				for (Character l : letters) {
+					copyLetters.add(l);
+				}
+				boolean matches = true;
+				//for every letter in the word, remove the letter from the copy
+				for (Character l : value) {
+					if (copyLetters.contains(l)) {
+						copyLetters.remove(l);
+					} else {
+						//the letter is no longer in the copy, so the word isn't an anagram
+						matches = false;
+						break;
+					}
+				}
+				//if the word is an anagram, add it
+				if (matches == true) {
+					tileWords.add(entry.getKey());
+				}
+			}
+
+		}
+		return tileWords;
 	}
 
 	public boolean contains(String word) {
-		return bySize.get(word.length()).contains(word);
+		return words.containsKey(word);
 	}
 
 	public boolean anagramHashMap(String word, String word2) {
@@ -122,6 +175,10 @@ public class WordList {
 				return false;
 		}
 		return true;
+	}
+
+	public ArrayList<Character> getLetters() {
+		return letters;
 	}
 
 }

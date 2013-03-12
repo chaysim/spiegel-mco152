@@ -2,9 +2,9 @@ package spiegel.projectile;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Point;
+
 import java.util.ArrayList;
-import java.util.Calendar;
+
 import java.util.Random;
 
 import javax.swing.JComponent;
