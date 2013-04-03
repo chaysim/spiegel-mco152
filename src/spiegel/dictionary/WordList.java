@@ -1,21 +1,26 @@
 package spiegel.dictionary;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Scanner;
 //based on distribution, take 7 tiles, find all words in it
 //write a unit test with 7 tiles that you choose
-import java.io.FileNotFoundException;
-
-import java.util.*;
-import java.util.Map.Entry;
 
 public class WordList {
 
-	private Map<String, ArrayList<Character>> words;
+	private final Map<String, ArrayList<Character>> words;
+
 	public Map<String, ArrayList<Character>> getWords() {
 		return words;
 	}
 
-	private TileBag tiles;
+	private final TileBag tiles;
 	private ArrayList<Character> letters;
 
 	public WordList() throws FileNotFoundException {
@@ -43,79 +48,44 @@ public class WordList {
 		return one;
 	}
 
-	public ArrayList<Character> pickTiles(int num){
+	public ArrayList<Character> pickTiles(int num) {
 		letters = tiles.getSomeLetters(num);
 		return letters;
 	}
+
 	public ArrayList<String> wordsFromTiles(ArrayList<Character> letters2) {
-		//the arraylist with the words
 		ArrayList<String> tileWords = new ArrayList<String>();
-		//the arraylist with the letters
 		letters = letters2;
-		//go through the hashmap of words
 		for (Entry<String, ArrayList<Character>> entry : words.entrySet()) {
 			ArrayList<Character> value = entry.getValue();
-			//if the letters have every letter in the current word
 			if (letters.containsAll(value)) {
-				//get a copy of the letters arraylist
-				ArrayList<Character> copyLetters = new ArrayList<Character>();
-				for (Character l : letters) {
-					copyLetters.add(l);
-				}
-				boolean matches = true;
-				//for every letter in the word, remove the letter from the copy
-				for (Character l : value) {
-					if (copyLetters.contains(l)) {
-						copyLetters.remove(l);
-					} else {
-						//the letter is no longer in the copy, so the word isn't an anagram
-						matches = false;
-						break;
-					}
-				}
-				//if the word is an anagram, add it
-				if (matches == true) {
+
+				if (matches(value)) {
 					tileWords.add(entry.getKey());
 				}
 			}
-
 		}
 		return tileWords;
 	}
-	public ArrayList<String> wordsFromTiles(int num) {
-		//the arraylist with the words
-		ArrayList<String> tileWords = new ArrayList<String>();
-		//the arraylist with the letters
-		letters = pickTiles(num);
-		//go through the hashmap of words
-		for (Entry<String, ArrayList<Character>> entry : words.entrySet()) {
-			ArrayList<Character> value = entry.getValue();
-			//if the letters have every letter in the current word
-			if (letters.containsAll(value)) {
-				//get a copy of the letters arraylist
-				ArrayList<Character> copyLetters = new ArrayList<Character>();
-				for (Character l : letters) {
-					copyLetters.add(l);
-				}
-				boolean matches = true;
-				//for every letter in the word, remove the letter from the copy
-				for (Character l : value) {
-					if (copyLetters.contains(l)) {
-						copyLetters.remove(l);
-					} else {
-						//the letter is no longer in the copy, so the word isn't an anagram
-						matches = false;
-						break;
-					}
-				}
-				//if the word is an anagram, add it
-				if (matches == true) {
-					tileWords.add(entry.getKey());
-				}
-			}
 
+	public boolean matches(ArrayList<Character> value) {
+		ArrayList<Character> copyLetters = new ArrayList<Character>();
+		for (Character l : letters) {
+			copyLetters.add(l);
 		}
-		return tileWords;
+		for (Character l : value) {
+			if (copyLetters.contains(l)) {
+				copyLetters.remove(l);
+			} else {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public ArrayList<String> wordsFromTiles(int num) {
+		letters = pickTiles(num);
+		return wordsFromTiles(letters);
 	}
 
 	public boolean contains(String word) {
@@ -148,8 +118,9 @@ public class WordList {
 		// checks if they are all 0
 		for (int k = 0; k < word2.length(); k++) {
 			Integer knum = map.get(word2.charAt(k));
-			if (knum != 0)
+			if (knum != 0) {
 				return false;
+			}
 		}
 
 		return true;
@@ -171,8 +142,9 @@ public class WordList {
 		Arrays.sort(one);
 		Arrays.sort(two);
 		for (int k = 0; k < word1.length(); k++) {
-			if (one[k] != two[k])
+			if (one[k] != two[k]) {
 				return false;
+			}
 		}
 		return true;
 	}

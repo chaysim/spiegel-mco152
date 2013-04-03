@@ -44,8 +44,7 @@ public class TileBag {
 	}
 
 	public void addLetter(int i, Character letter) {
-		int j = 0;
-		while (j < i) {
+		for (int j = 0; j < i; j++) {
 			letters.add(letter);
 			j++;
 		}
