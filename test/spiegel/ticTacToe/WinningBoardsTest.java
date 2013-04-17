@@ -9,8 +9,8 @@ public class WinningBoardsTest {
 	@Test
 	public void testWinningBoards() {
 		WinningBoards winBoards = new WinningBoards();
-		winBoards.fillBoardsOrginal();
 		assertEquals(winBoards.getWinningBoards().size(), 209088);
+		System.out.println(winBoards.getUniqueBoards());
 	}
 
 }

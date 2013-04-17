@@ -2,15 +2,22 @@ package spiegel.ticTacToe;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Stack;
+//need number of unique wins and ties
+//need number of unique boards
+//given a board, who will win
 
 public class WinningBoards {
 	private Stack<TTTBoard> boards;
 	private ArrayList<TTTBoard> winningBoards;
+	private HashMap<TTTBoard, TTTBoard> uniqueBoards;
 
 	public WinningBoards() {
 		this.boards = new Stack<TTTBoard>();
 		this.winningBoards = new ArrayList<TTTBoard>();
+		this.uniqueBoards = new HashMap<TTTBoard, TTTBoard>();
+		fillBoardsOrginal();
 	}
 
 	public void fillBoards2(int numSpacesLeft) {
@@ -34,6 +41,7 @@ public class WinningBoards {
 
 		for (int i = 0; i < numBoards; i++) {
 			TTTBoard aBoard = new TTTBoard(board);
+			uniqueBoards.put(aBoard, aBoard);
 			aBoard.getBoard()[spots.get(i).x][spots.get(i).y] = getChar(numBoards);
 			if (numBoards <= 5) {
 				if (aBoard.checkWin()) {
@@ -51,6 +59,7 @@ public class WinningBoards {
 	public void fillBoardsOrginal() {
 		for (int i = 0; i < 9; i++) {
 			TTTBoard aBoard = new TTTBoard();
+			uniqueBoards.put(aBoard, aBoard);
 			aBoard.getBoard()[i / 3][i % 3] = 'x';
 			boards.add(aBoard);
 		}
@@ -63,6 +72,14 @@ public class WinningBoards {
 		} else {
 			return 'x';
 		}
+	}
+
+	public int getNumBoards() {
+		return winningBoards.size() + boards.size();
+	}
+
+	public int getUniqueBoards() {
+		return uniqueBoards.size();
 	}
 
 	public ArrayList<TTTBoard> getWinningBoards() {

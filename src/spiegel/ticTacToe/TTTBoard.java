@@ -36,6 +36,17 @@ public class TTTBoard {
 		return false;
 	}
 
+	public boolean compareTo(TTTBoard board) {
+		for (int row = 0; row < 3; row++) {
+			for (int col = 0; col < 3; col++) {
+				if (this.getBoard()[row][col] != board.getBoard()[row][col]) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 	public void fillToTest(char a, char b, char c, char d, char e, char f,
 			char g, char h, char i) {
 		board[0][0] = a;
@@ -78,7 +89,7 @@ public class TTTBoard {
 		String info = "";
 		for (int row = 0; row < 3; row++) {
 			for (int col = 0; col < 3; col++) {
-				info += board[row][col] + " ";
+				info += board[row][col] + "|";
 				if (col == 2) {
 					info += "\n";
 				}
