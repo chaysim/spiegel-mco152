@@ -90,9 +90,6 @@ public class TTTBoard {
 		for (int row = 0; row < 3; row++) {
 			for (int col = 0; col < 3; col++) {
 				info += board[row][col] + "|";
-				if (col == 2) {
-					info += "\n";
-				}
 			}
 		}
 		return info;

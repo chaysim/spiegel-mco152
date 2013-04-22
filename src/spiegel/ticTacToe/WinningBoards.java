@@ -42,10 +42,10 @@ public class WinningBoards {
 			TTTBoard aBoard = new TTTBoard(board);
 
 			aBoard.getBoard()[spots.get(i).x][spots.get(i).y] = getChar(numBoards);
-			uniqueBoards.put(toCharArray(aBoard), aBoard);
+			uniqueBoards.put(toCharArrayList(aBoard), aBoard);
 			if (numBoards <= 5) {
 				if (aBoard.checkWin()) {
-					uniqueFinishedBoards.put(toCharArray(aBoard), aBoard);
+					uniqueFinishedBoards.put(toCharArrayList(aBoard), aBoard);
 				} else {
 					tempArray.add(aBoard);
 				}
@@ -60,7 +60,7 @@ public class WinningBoards {
 		for (int i = 0; i < 9; i++) {
 			TTTBoard aBoard = new TTTBoard();
 			aBoard.getBoard()[i / 3][i % 3] = 'x';
-			uniqueBoards.put(toCharArray(aBoard), aBoard);
+			uniqueBoards.put(toCharArrayList(aBoard), aBoard);
 			boards.add(aBoard);
 		}
 		fillBoards2(8);
@@ -68,7 +68,7 @@ public class WinningBoards {
 
 	private void fillUniqueFinished() {
 		for (TTTBoard board : boards) {
-			uniqueFinishedBoards.put(toCharArray(board), board);
+			uniqueFinishedBoards.put(toCharArrayList(board), board);
 		}
 	}
 
@@ -88,7 +88,7 @@ public class WinningBoards {
 		return uniqueBoards.size();
 	}
 
-	public ArrayList<Character> toCharArray(TTTBoard board) {
+	public ArrayList<Character> toCharArrayList(TTTBoard board) {
 		ArrayList<Character> letters = new ArrayList<Character>();
 		for (int row = 0; row < 3; row++) {
 			for (int col = 0; col < 3; col++) {
