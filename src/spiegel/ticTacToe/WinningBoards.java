@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
-//given a board, who will win
+//given a board, who will win - return a list
 
 public class WinningBoards {
 	private Stack<TTTBoard> boards;

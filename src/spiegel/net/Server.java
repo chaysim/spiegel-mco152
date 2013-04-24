@@ -8,18 +8,17 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Server {
-	public static void main(String[] args) throws IOException {
-		ServerSocket server = new ServerSocket(1025);
 
-		// tell server to listen for connection
-		// this is blocking, program waiting here to accept
-		Socket socket = server.accept();// returns connection between client and
-		// server
+	private ServerSocket server;
+	private Socket socket;
+
+	public Server() throws IOException {
+		server = new ServerSocket(1025);
+		socket = server.accept();
 
 		OutputStream out = socket.getOutputStream();
 		out.write("CONNECTED TO SERVER\n".getBytes());
 		out.flush();
-
 		InputStream in = socket.getInputStream();
 		Scanner inputStreamReader = new Scanner(in);
 		Scanner keyboard = new Scanner(System.in);
@@ -33,6 +32,6 @@ public class Server {
 			out.flush();
 		}
 		// server.close();
-
 	}
+
 }
