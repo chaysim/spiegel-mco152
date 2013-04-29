@@ -82,7 +82,7 @@ public class ChatGui extends JFrame {
 						out.write(text.getBytes());
 						out.flush();
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
+
 						e1.printStackTrace();
 					}
 

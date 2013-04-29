@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 public class ReaderThread extends Thread {
 
+	@SuppressWarnings("unused")
 	private Socket socket;
 	private Scanner scanner;
 	private ChatGui gui;

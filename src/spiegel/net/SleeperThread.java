@@ -15,7 +15,6 @@ public class SleeperThread extends Thread {
 			Thread.sleep(10000);
 			System.out.println("awake after " + sleepSeconds);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

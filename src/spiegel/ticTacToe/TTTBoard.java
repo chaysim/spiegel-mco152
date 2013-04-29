@@ -6,9 +6,11 @@ import java.util.ArrayList;
 public class TTTBoard {
 
 	private char[][] board;
+	private Point start;
 
 	public TTTBoard() {
 		this.board = new char[3][3];
+		this.setStart(new Point());
 	}
 
 	public TTTBoard(TTTBoard oldBoard) {
@@ -18,6 +20,7 @@ public class TTTBoard {
 				board[row][col] = oldBoard.getBoard()[row][col];
 			}
 		}
+		this.setStart(oldBoard.getStart());
 	}
 
 	public boolean checkAnyWins(ArrayList<TTTBoard> boards) {// for testing
@@ -130,5 +133,13 @@ public class TTTBoard {
 			}
 		}
 		return false;
+	}
+
+	public Point getStart() {
+		return start;
+	}
+
+	public void setStart(Point start) {
+		this.start = start;
 	}
 }

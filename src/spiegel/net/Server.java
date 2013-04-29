@@ -20,7 +20,9 @@ public class Server {
 		out.write("CONNECTED TO SERVER\n".getBytes());
 		out.flush();
 		InputStream in = socket.getInputStream();
+		@SuppressWarnings("resource")
 		Scanner inputStreamReader = new Scanner(in);
+		@SuppressWarnings("resource")
 		Scanner keyboard = new Scanner(System.in);
 		String str;
 		while (true) {

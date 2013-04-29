@@ -11,11 +11,14 @@ public class Client {
 
 	public static void main(String[] args) throws UnknownHostException,
 			IOException {
+		@SuppressWarnings("resource")
 		Socket socket = new Socket("192.168.117.119", 1025);
 		InputStream in = socket.getInputStream();
 		OutputStream output = socket.getOutputStream();
 
+		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(in);
+		@SuppressWarnings("resource")
 		Scanner keyboard = new Scanner(System.in);
 		while (true) {
 			System.out.println(scanner.nextLine());

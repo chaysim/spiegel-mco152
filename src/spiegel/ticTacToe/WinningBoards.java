@@ -16,38 +16,91 @@ public class WinningBoards {
 		this.boards = new Stack<TTTBoard>();
 		this.uniqueBoards = new HashMap<ArrayList<Character>, TTTBoard>();
 		this.uniqueFinishedBoards = new HashMap<ArrayList<Character>, TTTBoard>();
-		fillBoardsOrginal();
+		// fillBoardsOrginal();
 	}
 
-	public int checkMove(ArrayList<Point> spot, TTTBoard board, char turn) {
+	public ArrayList<Point> nextMove(TTTBoard board) throws Exception {
+		ArrayList<Point> spots = board.getEmptySpots();
+		ArrayList<Point> winningSpots = new ArrayList<Point>();
+		if (spots.size() == 0) {
+			throw new Exception("No spaces left");
+		} else if (board.checkWin()) {
+			throw new Exception("Already won");
+		} else if (spots.size() == 9) {
+			Point point = new Point(1, 1);
+			winningSpots.add(point);
+			return winningSpots;
+		}
+
+		char turn = getChar(spots.size());
+		winningSpots = checkMove(spots, board, turn);
+		return winningSpots;
+	}
+
+	public ArrayList<Point> checkMove(ArrayList<Point> spot, TTTBoard board,
+			char turn) {
+		ArrayList<Point> winningSpots = new ArrayList<Point>();
+		Stack<TTTBoard> boards = new Stack<TTTBoard>();
 		for (int i = 0; i < spot.size(); i++) {
 			TTTBoard aBoard = new TTTBoard(board);
 			aBoard.getBoard()[spot.get(i).x][spot.get(i).y] = turn;
-			if (board.checkWin()) {
-				return i;
+			aBoard.setStart(spot.get(i));
+			if (spot.size() < 6) {
+				if (aBoard.checkWin()) {
+					winningSpots.add(spot.get(i));
+				} else {
+					boards.add(aBoard);
+				}
+			} else {
+				boards.add(aBoard);
 			}
 		}
-		return 0;
+		if (!winningSpots.isEmpty()) {
+			return winningSpots;
+		} else {
+			winningSpots = checkMove2(boards, turn);
+		}
+		return winningSpots;
 	}
 
-	public int checkMove2(Point spot, TTTBoard board, char turn)
-			throws Exception {
-		board.getBoard()[spot.x][spot.y] = turn;
-		if (board.checkWin()) {
-			return 1;
-		} else {
-			ArrayList<Point> spots = board.getEmptySpots();
-			if (spots.size() == 0) {
-				throw new Exception("No spaces left");
+	public ArrayList<Point> checkMove2(Stack<TTTBoard> boards, char player) {
+		ArrayList<Point> winningSpots = new ArrayList<Point>();
+		ArrayList<TTTBoard> tempArray = new ArrayList<TTTBoard>();
+		while (!boards.isEmpty()) {
+			TTTBoard aBoard = boards.pop();
+			ArrayList<Point> spots = aBoard.getEmptySpots();
+			char turn = getChar(spots.size());
+			ArrayList<TTTBoard> tempArray2 = new ArrayList<TTTBoard>();
+			for (int i = 0; i < spots.size(); i++) {
+				TTTBoard board = new TTTBoard(aBoard);
+				board.getBoard()[spots.get(i).x][spots.get(i).y] = turn;
+				if (spots.size() < 6) {
+					if (board.checkWin()) {
+						if (turn == player) {
+							winningSpots.add(board.getStart());
+							break;
+						} else {
+							break;
+						}
+
+					} else {
+						tempArray2.add(board);
+					}
+				} else {
+					tempArray.add(board);
+				}
 			}
-			getChar(9 - spots.size());
-			for (Point point : spots) {
-				/*
-				 * if (checkMove(point, board, turn) == 1) { return -1; }
-				 */
+			if (tempArray2.size() == spots.size()) {
+				// didn't break out because of loss or win
+				tempArray.addAll(tempArray2);
 			}
-			return 0;
 		}
+		if (winningSpots.isEmpty()
+				&& tempArray.get(0).getEmptySpots().size() != 0) {
+			boards.addAll(tempArray);
+			winningSpots = checkMove2(boards, player);
+		}
+		return winningSpots;
 	}
 
 	public void fillBoards2(int numSpacesLeft) {
@@ -117,19 +170,6 @@ public class WinningBoards {
 
 	public int getUniqueBoards() {
 		return uniqueBoards.size();
-	}
-
-	public TTTBoard nextMove(TTTBoard board) throws Exception {
-		ArrayList<Point> spots = board.getEmptySpots();
-		if (spots.size() == 0) {
-			throw new Exception("No spaces left");
-		} else if (board.checkWin()) {
-			return board;
-		}
-		char turn = getChar(spots.size());
-		int spot = checkMove(spots, board, turn);
-		board.getBoard()[spots.get(spot).x][spots.get(spot).y] = turn;
-		return board;
 	}
 
 	public ArrayList<Character> toCharArrayList(TTTBoard board) {
