@@ -14,15 +14,15 @@ public class Server {
 
 	public Server() throws IOException {
 		server = new ServerSocket(1025);
-		socket = server.accept();
+		socket = server.accept();// waits for call from client, this is blocking
 
 		OutputStream out = socket.getOutputStream();
 		out.write("CONNECTED TO SERVER\n".getBytes());
 		out.flush();
 		InputStream in = socket.getInputStream();
-		@SuppressWarnings("resource")
+
 		Scanner inputStreamReader = new Scanner(in);
-		@SuppressWarnings("resource")
+
 		Scanner keyboard = new Scanner(System.in);
 		String str;
 		while (true) {
