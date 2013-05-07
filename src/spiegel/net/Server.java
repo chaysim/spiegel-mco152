@@ -1,39 +1,38 @@
 package spiegel.net;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.Scanner;
 
-public class Server {
+public class Server extends ReaderThread {
 
-	private ServerSocket server;
-	private Socket socket;
+	public Server(ServerSocket server, ChatGUI chatGUI) throws IOException {
+		// server = new ServerSocket(1025);
+		socket = server.accept();
+		output = socket.getOutputStream();
+		in = socket.getInputStream();
+		inputStreamReader = new Scanner(in);
+		this.gui = chatGUI;
+		// out.flush();
+	}
 
-	public Server() throws IOException {
-		server = new ServerSocket(1025);
-		socket = server.accept();// waits for call from client, this is blocking
+	@Override
+	public void send(String message) throws IOException {
+		output.write(message.getBytes());
+		output.write("\n".getBytes());
+		output.flush();
+	}
 
-		OutputStream out = socket.getOutputStream();
-		out.write("CONNECTED TO SERVER\n".getBytes());
-		out.flush();
-		InputStream in = socket.getInputStream();
+	@Override
+	public void run() {
 
-		Scanner inputStreamReader = new Scanner(in);
-
-		Scanner keyboard = new Scanner(System.in);
-		String str;
+		Scanner scanner = new Scanner(in);
 		while (true) {
-			str = inputStreamReader.nextLine();
-			System.out.println(str);
+			if (scanner.hasNext()) {
+				gui.getChatMessage((scanner.nextLine()));
+			}
 
-			str = keyboard.nextLine() + "\n";
-			out.write(str.getBytes());
-			out.flush();
 		}
-		// server.close();
 	}
 
 }

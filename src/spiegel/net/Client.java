@@ -1,32 +1,36 @@
 package spiegel.net;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Scanner;
 
-public class Client {
+public class Client extends ReaderThread {
 
-	public static void main(String[] args) throws UnknownHostException,
-			IOException {
+	public Client(Socket socket, ChatGUI gui) throws IOException {
+		this.socket = socket;
+		this.gui = gui;
 
-		Socket socket = new Socket("192.168.117.119", 1025);
-		InputStream in = socket.getInputStream();
-		OutputStream output = socket.getOutputStream();
+		in = socket.getInputStream();
+		output = socket.getOutputStream();
+	}
+
+	@Override
+	public void send(String message) throws IOException {
+		output.write(message.getBytes());
+		output.write("\n".getBytes());
+		output.flush();
+	}
+
+	@Override
+	public void run() {
 
 		Scanner scanner = new Scanner(in);
-
-		Scanner keyboard = new Scanner(System.in);
 		while (true) {
-			System.out.println(scanner.nextLine());
+			if (scanner.hasNext()) {
+				gui.getChatMessage((scanner.nextLine()));
+			}
 
-			String message = keyboard.nextLine() + "\n";
-			output.write(message.getBytes());
-			output.flush();
 		}
-
 	}
 
 }
