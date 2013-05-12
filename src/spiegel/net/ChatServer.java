@@ -17,8 +17,6 @@ public class ChatServer {
 		Socket socket;
 		while ((socket = server.accept()) != null) {
 			log.log(Level.INFO, "Socket Accepted");
-			// same as writing before while loop - Socket
-			// socket=server.accept(); while(socket!=null)
 			ClientHandlerThread clientHandlerThread = new ClientHandlerThread(
 					socket, writerThread);
 			clientHandlerThread.start();
