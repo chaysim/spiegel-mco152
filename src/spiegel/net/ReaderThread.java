@@ -24,9 +24,20 @@ public class ReaderThread extends Thread {
 	public void run() {
 		while (true) {
 			String line = scanner.nextLine() + "\n";
+			if (line.startsWith("JOIN")) {
+				try {
+					gui.sendAnnounce();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 			line = msgFormat.parseMessage(line);
 			try {
-				gui.addToChat(line);
+				if (line.startsWith("ANNOUNCE")) {
+					gui.addToChatters(line);
+				} else {
+					gui.addToChat(line);
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

@@ -27,4 +27,20 @@ public class ReaderThreadTest {
 		Mockito.verify(gui, times(1)).addToChat(Mockito.anyString());
 	}
 
+	@Test
+	public void testAnnounce() throws IOException {
+		Socket socket = Mockito.mock(Socket.class);
+		ChatGui gui = Mockito.mock(ChatGui.class);
+		ByteArrayInputStream in = new ByteArrayInputStream(
+				"ANNOUNCE Spiegel\n".getBytes());
+		Mockito.when(socket.getInputStream()).thenReturn(in);
+		ReaderThread thread = new ReaderThread(socket, gui);
+		try {
+			thread.run();
+			Mockito.verify(gui, times(1)).addToChat(Mockito.anyString());
+		} catch (NoSuchElementException e) {
+			// supposed to land here so test will pass
+		}
+
+	}
 }

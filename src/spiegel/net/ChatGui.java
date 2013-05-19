@@ -14,6 +14,7 @@ import java.net.UnknownHostException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -24,21 +25,27 @@ public class ChatGui extends JFrame {
 	private JButton sendBtn;
 	private JTextField compose;
 	private JTextArea chat;
+	private JTextArea chatters;
 	private JScrollPane scroll;
 	private ReaderThread readerThread;
 	private Socket socket;
 	private OutputStream out;
+	private String name;
 
 	public ChatGui() throws IOException {
 		super();
+		name = JOptionPane.showInputDialog("Enter your name");
 		sendBtn = new JButton("Send");
 		compose = new JTextField();
 		compose.addKeyListener(new EnterListener());
 		chat = new JTextArea();
+		chatters = new JTextArea();
+		chatters.setSize(20, 200);
+		chatters.setText("Currently chatting" + "\n");
 		scroll = new JScrollPane(chat);
 		chat.setEditable(false);
 		setLayout(new BorderLayout());
-
+		add(chatters, BorderLayout.EAST);
 		add(scroll, BorderLayout.CENTER);
 		add(new ComposePanel(sendBtn, compose), BorderLayout.SOUTH);
 		sendBtn.addActionListener(new ClickListener());
@@ -49,20 +56,32 @@ public class ChatGui extends JFrame {
 		readerThread.start();
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		prepareClose();
+	}
 
+	public void addToChatters(String line) {
+		line = line.substring(9);
+		if (!chatters.getText().contains(line)) {
+			chatters.setText(chatters.getText() + "\n" + line);
+		}
+	}
+
+	public void sendAnnounce() throws IOException {
+		String s = "ANNOUNCE " + name + "\n";
+		out.write(s.getBytes());
+		out.flush();
 	}
 
 	public void prepareClose() {
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				String s = "LEAVE Spiegel has left";
+				String s = "LEAVE" + name + "has left";
 				try {
 					out.write(s.getBytes());
 					out.flush();
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
+					System.exit(0);
 				}
 				System.exit(0);
 			}
@@ -73,7 +92,7 @@ public class ChatGui extends JFrame {
 		socket = new Socket("localhost", 8080);
 		out = socket.getOutputStream();
 		readerThread = new ReaderThread(socket, this);
-		String s = "JOIN Spiegel has joined" + "\n";
+		String s = "JOIN " + name + " has joined" + "\n";
 		out.write(s.getBytes());
 		out.flush();
 	}
@@ -83,7 +102,7 @@ public class ChatGui extends JFrame {
 	}
 
 	public void sendTheChat() throws IOException {
-		String s = "SAY Spiegel: " + compose.getText() + "\n";
+		String s = "SAY " + name + ": " + compose.getText() + "\n";
 		compose.setText("");
 		out.write(s.getBytes());
 		out.flush();
@@ -113,7 +132,6 @@ public class ChatGui extends JFrame {
 			try {
 				sendTheChat();
 			} catch (IOException e) {
-
 				e.printStackTrace();
 			}
 
