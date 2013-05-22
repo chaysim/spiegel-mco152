@@ -41,8 +41,9 @@ public class ChatGui extends JFrame {
 		compose.addKeyListener(new EnterListener());
 		chat = new JTextArea();
 		chatters = new JTextArea();
+		chatters.setEnabled(false);
 		chatters.setSize(20, 200);
-		chatters.setText("Currently chatting" + "\n");
+		chatters.setText("Currently chatting");
 		scroll = new JScrollPane(chat);
 		chat.setEditable(false);
 		setLayout(new BorderLayout());
@@ -51,7 +52,7 @@ public class ChatGui extends JFrame {
 		add(new ComposePanel(sendBtn, compose), BorderLayout.SOUTH);
 		sendBtn.addActionListener(new ClickListener());
 		setVisible(true);
-		setSize(300, 200);
+		setSize(400, 300);
 		setName("Chat");
 		initializeClient();
 		readerThread.start();
@@ -62,6 +63,12 @@ public class ChatGui extends JFrame {
 	public void addToChatters(String line) {
 		if (!chatters.getText().contains(line)) {
 			chatters.setText(chatters.getText() + "\n" + line);
+		}
+	}
+
+	public void removeFromChatters(String line) {
+		if (chatters.getText().contains(line)) {
+			chatters.setText(chatters.getText().replace(line, "") + "\n");
 		}
 	}
 

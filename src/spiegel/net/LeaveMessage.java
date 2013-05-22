@@ -5,9 +5,11 @@ import java.io.IOException;
 public class LeaveMessage extends Message {
 	@Override
 	public void handleMessage(ChatGui gui) {
-		message = message.substring(6) + "has left";
+		String name = message.substring(6);
+		message = name + " has left";
 		try {
 			gui.addToChat(message);
+			gui.removeFromChatters(name);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

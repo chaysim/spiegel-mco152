@@ -9,7 +9,7 @@ public class JoinMessage extends Message {
 		message = message.substring(5);
 		try {
 			gui.sendAnnounce();
-			gui.addToChat(message);
+			gui.addToChat(message.trim());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

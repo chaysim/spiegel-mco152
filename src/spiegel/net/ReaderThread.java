@@ -10,7 +10,7 @@ public class ReaderThread extends Thread {
 	private Socket socket;
 	private Scanner scanner;
 	private ChatGui gui;
-	private ParseMessage msgFormat;
+
 	private Message[] messages;
 
 	public ReaderThread(Socket socket, ChatGui gui) throws IOException {
@@ -18,7 +18,6 @@ public class ReaderThread extends Thread {
 		this.gui = gui;
 		InputStream in = socket.getInputStream();
 		scanner = new Scanner(in);
-		msgFormat = new ParseMessage();
 		messages = new Message[] { new JoinMessage(), new LeaveMessage(),
 				new SayMessage(), new AnnounceMessage() };
 	}
@@ -26,7 +25,7 @@ public class ReaderThread extends Thread {
 	@Override
 	public void run() {
 		while (true) {
-			String line = scanner.nextLine() + "\n";
+			String line = scanner.nextLine();
 			for (Message message : messages) {
 				if (message.isMessage(line)) {
 					message.handleMessage(gui);
