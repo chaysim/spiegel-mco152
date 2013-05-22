@@ -11,36 +11,36 @@ public class ReaderThread extends Thread {
 	private Scanner scanner;
 	private ChatGui gui;
 	private ParseMessage msgFormat;
+	private Message[] messages;
 
 	public ReaderThread(Socket socket, ChatGui gui) throws IOException {
-		this.socket = socket;
+		this.setSocket(socket);
 		this.gui = gui;
 		InputStream in = socket.getInputStream();
 		scanner = new Scanner(in);
 		msgFormat = new ParseMessage();
+		messages = new Message[] { new JoinMessage(), new LeaveMessage(),
+				new SayMessage(), new AnnounceMessage() };
 	}
 
 	@Override
 	public void run() {
 		while (true) {
 			String line = scanner.nextLine() + "\n";
-			if (line.startsWith("JOIN")) {
-				try {
-					gui.sendAnnounce();
-				} catch (IOException e) {
-					e.printStackTrace();
+			for (Message message : messages) {
+				if (message.isMessage(line)) {
+					message.handleMessage(gui);
+					break;
 				}
-			}
-			line = msgFormat.parseMessage(line);
-			try {
-				if (line.startsWith("ANNOUNCE")) {
-					gui.addToChatters(line);
-				} else {
-					gui.addToChat(line);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
 		}
+	}
+
+	public Socket getSocket() {
+		return socket;
+	}
+
+	public void setSocket(Socket socket) {
+		this.socket = socket;
 	}
 }

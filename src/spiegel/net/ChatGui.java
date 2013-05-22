@@ -22,6 +22,7 @@ import javax.swing.JTextField;
 
 public class ChatGui extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private JButton sendBtn;
 	private JTextField compose;
 	private JTextArea chat;
@@ -59,7 +60,6 @@ public class ChatGui extends JFrame {
 	}
 
 	public void addToChatters(String line) {
-		line = line.substring(9);
 		if (!chatters.getText().contains(line)) {
 			chatters.setText(chatters.getText() + "\n" + line);
 		}
@@ -75,7 +75,7 @@ public class ChatGui extends JFrame {
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				String s = "LEAVE" + name + "has left";
+				String s = "LEAVE " + name;
 				try {
 					out.write(s.getBytes());
 					out.flush();
@@ -89,10 +89,10 @@ public class ChatGui extends JFrame {
 	}
 
 	private void initializeClient() throws UnknownHostException, IOException {
-		socket = new Socket("localhost", 8080);
+		socket = new Socket("192.168.117.126", 8080);
 		out = socket.getOutputStream();
 		readerThread = new ReaderThread(socket, this);
-		String s = "JOIN " + name + " has joined" + "\n";
+		String s = "JOIN " + name + "\n";
 		out.write(s.getBytes());
 		out.flush();
 	}
@@ -118,6 +118,9 @@ public class ChatGui extends JFrame {
 	}
 
 	private class ComposePanel extends JPanel {
+
+		private static final long serialVersionUID = 1L;
+
 		public ComposePanel(JButton send, JTextField compose) {
 			setLayout(new BorderLayout());
 			add(compose, BorderLayout.CENTER);
