@@ -68,7 +68,8 @@ public class ChatGui extends JFrame {
 
 	public void removeFromChatters(String line) {
 		if (chatters.getText().contains(line)) {
-			chatters.setText(chatters.getText().replace(line, "") + "\n");
+			chatters.setText(chatters.getText().replace(line, "") + "\b");
+
 		}
 	}
 
